@@ -64,13 +64,13 @@ class DB:
     def commit(self):
         self.con.commit()
 
-def checkSig(msg, pow, sig, addr):
+def checkSig(replyto, msg, pow, sig, addr):
     try:
         address = bytes(bytearray.fromhex(addr))
         pubkey = secp256k1.PublicKey(address, raw=True)
         signature = bytes(bytearray.fromhex(sig))
         signature = pubkey.ecdsa_deserialize(signature)
-        message = f'{{"message": "{msg}", "nonce": "{pow}"}}'.encode(encoding='ASCII')
+        message = f'{{"replyto": "{replyto}", "message": "{msg}", "pow": "{pow}"}}'.encode(encoding='ASCII')
         print("Check sig on", message)
         return pubkey.ecdsa_verify(message, signature)
     except Exception as e:
@@ -116,7 +116,7 @@ def postVix():
         print(e)
         return dataclassToJson(Result(False, "Hashcash header failed. ", 0))
     req = flask_request.json
-    if checkSig(req['message'], hashcash, req['signature'], req['address']):
+    if checkSig(req['replyto'], req['message'], hashcash, req['signature'], req['address']):
         # Make post
         db.insertPost(req['message'], req['signature'], req['address'], hashcash, req['replyto'])
         return dataclassToJson(Result(True, "OK", 0))
