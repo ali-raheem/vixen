@@ -49,7 +49,8 @@ Uses `secp256k1` curve with ECDSA (like bitcoin) for signing, and a proof of wor
 
 ## /post (or /p)
 ### GET /post/<POW>
-Returns a JSON object containing message assocaited with a particular proof of work
+Returns a JSON object containing message assocaited with a particular proof of work (also supports using the signature)
+
 ### POST /post/
 Submit a new signed message
 
@@ -58,7 +59,7 @@ Returns a JSON object array containing submitted posts of an address.
 Will support LIMIT and OFFSET but currently limit to 10 and offset to 0
 
 ## GET /replies/<sig> (or /r/<sig>)
-Returns a JSON object array containing replyto with the provided signature. This seems safer (esp if signature allows pubkey recovery) but I might switch this to PoW.
+Returns a JSON object array containing replyto with the provided signature. Also supports using a PoW if that was what was used.
 
 Will support LIMIT and OFFSET but currently limit to 10 and offset to 0
 

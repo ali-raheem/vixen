@@ -49,6 +49,9 @@ class DB:
     def getPostByProof(self, proof):
         db.cur.execute('''SELECT * FROM posts WHERE proof = ?''', (proof,))
         return [Post(*x) for x in db.cur][0]
+    def getPostBySig(self, sig):
+        db.cur.execute('''SELECT * FROM posts WHERE signature = ?''', (sig,))
+        return [Post(*x) for x in db.cur][0]
     def insertPost(self, msg, sig, addr, proof, replyto):
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         msg = msg[:255]
@@ -126,8 +129,13 @@ def postVix():
 
 @app.route("/post/<proof>")
 @app.route("/p/<proof>")
-def getPostByProof(proof):
-    post = db.getPostByProof(proof)
+def getPost(proof):
+    post = None
+    if re.fullmatch("\d{10}-\d{10}-\d{10}", proof) == None:
+        # it's a sig
+        post = db.getPostBySig(proof)
+    else:
+        post = db.getPostByProof(proof)
     if post != None:
         return json.dumps(asdict(post))
     return ""
