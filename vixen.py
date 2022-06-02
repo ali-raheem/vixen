@@ -142,10 +142,10 @@ def getVixByAddr(addr):
 def getThreadByProof(proof):
     return ""
 
-@app.route("/replies/<proof>")
-@app.route("/r/<proof>")
-def getRepliesByProof(proof):
-    return json.dumps([asdict(x) for x in db.getRepliesByProof(proof)])
+@app.route("/replies/<pow>")
+@app.route("/r/<pow>")
+def getRepliesByProof(pow):
+    return json.dumps([asdict(x) for x in db.getRepliesByProof(pow)])
 
 if __name__ == '__main__':
     db = DB('./vixen.db')

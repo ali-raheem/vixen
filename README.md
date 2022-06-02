@@ -57,8 +57,8 @@ Submit a new signed message
 Returns a JSON object array containing submitted posts of an address.
 Will support LIMIT and OFFSET but currently limit to 10 and offset to 0
 
-## GET /replties/<pow> (or /r/<pow>)
-Returns a JSON object array containing replyto with the provided proof of work.
+## GET /replies/<sig> (or /r/<sig>)
+Returns a JSON object array containing replyto with the provided signature. This seems safer (esp if signature allows pubkey recovery) but I might switch this to PoW.
 
 Will support LIMIT and OFFSET but currently limit to 10 and offset to 0
 
